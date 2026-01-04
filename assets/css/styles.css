@@ -1,0 +1,53 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    background: #f4f4f4;
+
+    height: 100vh;
+}
+
+p {
+    margin: 0;
+    margin-bottom: 7px;
+}
+
+.tasks-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 50px;
+
+    width: 100%;
+    height: 100%;
+}
+
+.tasks-column {
+    flex: 1;
+}
+
+.add-task-column {
+    flex: 1;
+}
+
+.task-card {
+    background: white;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-label {
+    cursor: pointer;
+}

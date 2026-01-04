@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Мой ToDo на PHP</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <link rel="stylesheet" href="./assets/css/styles.css" />
+    </head>
+    <body>
+        <div class="tasks-page">
+            <div class="tasks-column">
+                <h1>Задачи</h1>
+
+                <div data-bind="foreach: tasks">
+                    <div class="task-card">
+                        <div>
+                            <span data-bind="text: title, css: {completed: status == 1}"></span>
+                        </div>
+                        <span data-bind="text: status == 1 ? 'Готово' : 'В процессе'"></span>
+                        <button data-bind="click: $root.toggleStatus">
+                            <span
+                                data-bind="text: status == 1 ? 'Вернуть в работу' : 'Выполнить'"
+                            ></span>
+                        </button>
+                        <button data-bind="click: $root.delete">Удалить</button>
+                    </div>
+                </div>
+
+                <p data-bind="visible: tasks().length === 0">Задач пока нет</p>
+            </div>
+
+            <div class="add-task-column">
+                <h1>Новая задача</h1>
+
+                <form data-bind="submit:addTask">
+                    <input type="text" data-bind="value: newTaskTitle" placeholder="Новая задача" />
+                    <button type="submit">Добавить</button>
+                </form>
+            </div>
+
+            <div class="settings-block">
+                <h2>Настройки уведомлений</h2>
+
+                <form class="settings-form">
+                    <div>
+                        <label class="form-label">
+                            <input type="checkbox" name="notifyEnabled" />
+                            <span>Включить уведомления</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <input type="text" placeholder="email" />
+                        <input type="text" placeholder="telegram id" />
+                    </div>
+
+                    <div>
+                        <p>Способ получения уведомлений</p>
+                        <label class="form-label">
+                            <input type="radio" name="notify" value="email" />
+                            <span>Через email</span>
+                        </label>
+                        <label class="form-label">
+                            <input type="radio" name="notify" value="telegram" />
+                            <span>Через telegram</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="./assets/js/TodoViewModel.js"></script>
+    </body>
+</html>
