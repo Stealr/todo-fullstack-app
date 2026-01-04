@@ -1,4 +1,4 @@
-function TodoViewModel() {
+function SettingsViewModel() {
     let self = this;
 
     self.enableNotifications = ko.observable(false);
@@ -9,12 +9,12 @@ function TodoViewModel() {
 
     self.loadSettings = async () => {
         try {
-            const response = await axios.get('./api/get_settings.php');
+            const response = await axios.get('./api/settings/get_settings.php');
             const data = response.data;
-            self.enableNotifications(data.enable_notifications == 1);
-            self.notificationMethod(data.notification_method);
+            self.enableNotifications(data.notifEnabled == 1);
+            self.notificationMethod(data.notification_type);
             self.emailText(data.email || '');
-            self.telegramText(data.telegram || '');
+            self.telegramText(data.telegram_chat_id || '');
         } catch (error) {
             console.error('Ошибка при загрузке настроек:', error);
         }
@@ -22,13 +22,14 @@ function TodoViewModel() {
 
     self.saveSettings = async () => {
         try {
-            await axios.post('./api/save_settings.php', {
+            await axios.post('./api/settings/save_settings.php', {
                 enable_notifications: self.enableNotifications() ? 1 : 0,
                 notification_method: self.notificationMethod(),
                 email: self.emailText(),
                 telegram: self.telegramText(),
             });
             alert('Настройки сохранены');
+            self.loadSettings();
         } catch (error) {
             alert('Ошибка при сохранении настроек');
         }
@@ -37,4 +38,4 @@ function TodoViewModel() {
     self.loadSettings();
 }
 
-ko.applyBindings(new TodoViewModel());
+// ko.applyBindings(new SettingsViewModel(), document.querySelector('.settings-block'));

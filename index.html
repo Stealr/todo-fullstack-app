@@ -11,7 +11,7 @@
     </head>
     <body>
         <div class="tasks-page">
-            <div class="tasks-column">
+            <div class="tasks-column" data-bind="with: todo">
                 <h1>Задачи</h1>
 
                 <div data-bind="foreach: tasks">
@@ -20,19 +20,19 @@
                             <span data-bind="text: title, css: {completed: status == 1}"></span>
                         </div>
                         <span data-bind="text: status == 1 ? 'Готово' : 'В процессе'"></span>
-                        <button data-bind="click: $root.toggleStatus">
+                        <button data-bind="click: $parent.toggleStatus">
                             <span
                                 data-bind="text: status == 1 ? 'Вернуть в работу' : 'Выполнить'"
                             ></span>
                         </button>
-                        <button data-bind="click: $root.delete">Удалить</button>
+                        <button data-bind="click: $parent.delete">Удалить</button>
                     </div>
                 </div>
 
                 <p data-bind="visible: tasks().length === 0">Задач пока нет</p>
             </div>
 
-            <div class="add-task-column">
+            <div class="add-task-column" data-bind="with: todo">
                 <h1>Новая задача</h1>
 
                 <form data-bind="submit:addTask">
@@ -41,30 +41,48 @@
                 </form>
             </div>
 
-            <div class="settings-block">
+            <div class="settings-block" data-bind="with: settings">
                 <h2>Настройки уведомлений</h2>
 
-                <form class="settings-form">
+                <form class="settings-form" data-bind="submit:saveSettings">
                     <div>
                         <label class="form-label">
-                            <input type="checkbox" name="notifyEnabled" />
+                            <input
+                                type="checkbox"
+                                name="enable_notifications"
+                                data-bind="checked: enableNotifications"
+                            />
                             <span>Включить уведомления</span>
                         </label>
                     </div>
 
                     <div>
-                        <input type="text" placeholder="email" />
-                        <input type="text" placeholder="telegram id" />
+                        <input type="text" placeholder="email" data-bind="value: emailText" />
+                        <input
+                            type="text"
+                            placeholder="telegram id"
+                            data-bind="value: telegramText"
+                        />
                     </div>
 
                     <div>
                         <p>Способ получения уведомлений</p>
                         <label class="form-label">
-                            <input type="radio" name="notify" value="email" />
+                            <input
+                                type="radio"
+                                name="notify"
+                                value="email"
+                                data-bind="checked: notificationMethod"
+                            />
                             <span>Через email</span>
                         </label>
                         <label class="form-label">
-                            <input type="radio" name="notify" value="telegram" />
+                            <input
+                                type="radio"
+                                name="notify"
+                                value="telegram"
+                                data-bind="checked: notificationMethod"
+                            />
                             <span>Через telegram</span>
                         </label>
                     </div>
@@ -77,5 +95,7 @@
         </div>
 
         <script src="./assets/js/TodoViewModel.js"></script>
+        <script src="./assets/js/SettingsViewModel.js"></script>
+        <script src="./assets/js/AppViewModel.js"></script>
     </body>
 </html>

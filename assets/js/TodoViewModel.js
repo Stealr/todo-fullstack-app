@@ -55,4 +55,4 @@ function TodoViewModel() {
     self.loadTasks();
 }
 
-ko.applyBindings(new TodoViewModel());
+// ko.applyBindings(new TodoViewModel(), document.querySelector('.tasks-column'));
