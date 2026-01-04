@@ -47,12 +47,31 @@ if ($stmt->execute([$newStatus, $_POST['id']])) {
                     $mail->isHTML(true);
                     $mail->Subject = 'Задача выполнена';
                     $mail->Body    = '<p>Ваша задача с ID ' . $_POST['id'] . ' была отмечена как выполненная.</p>';
-                    
+
                     $mail->send();
                     echo 'Письмо отправлено';
                 } catch (Exception $e) {
                     echo "Ошибка отправки: {$mail->ErrorInfo} /n" . $smtp_pass . "/n" . $smtp_user;
                 }
+            } else if ($settings['notification_type'] == 'telegram' && !empty($settings['telegram_chat_id'])) {
+                $url = "https://api.telegram.org/bot{$tg_bot_token}/sendMessage";
+
+                $data = [
+                    'chat_id' => $settings['telegram_chat_id'],
+                    'text' => 'Ваша задача с ID ' . $_POST['id'] . ' была отмечена как выполненная.',
+                    'parse_mode' => 'HTML'
+                ];
+
+                $options = [
+                    'http' => [
+                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($data),
+                    ],
+                ];
+
+                $context  = stream_context_create($options);
+                $result = file_get_contents($url, false, $context);
             }
         }
     }
